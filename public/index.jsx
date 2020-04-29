@@ -10,6 +10,7 @@ class Main extends Component{
                     <li><Link exact to="/">Home</Link></li>
                     <li><Link to="/basic">BasicNetwork</Link></li>
                     <li><Link to="/first">FirstNetwork</Link></li>
+          <li><Link to="/fabcar">Fabcar</Link></li>
                 </ul>
                 
                 
@@ -20,6 +21,56 @@ class Main extends Component{
         );
     }
 }
+
+class Fabcar extends Component{
+    state= {
+        car:[],
+    }
+
+    getAllCars = () =>{
+        axios.get('fabcar_network/get_all_car')
+        .then((res)=>{
+            // console.log(res.data.queryAllCars);
+            const a = JSON.parse(res.data.queryAllCars);
+            console.log(a);
+
+            const car = a.map((item)=>{
+                return <tr>
+                            <th>{item.Key}</th>
+                            <th>{item.Record.color}</th>
+                            <th>{item.Record.make}</th>
+                            <th>{item.Record.model}</th>
+                            <th>{item.Record.owner}</th>
+                        </tr>
+            })
+            console.log(car);
+            this.setState({
+                car,
+            })
+
+        })
+        .catch((error)=>{
+            console.log(error);
+        });
+    }
+    
+    render(){
+
+        return (
+            <div>
+                <a href='fabcar.html' > 중고차 시장 가기 </a>
+                <br/>
+                <button onClick={this.getAllCars}>getAllCars</button>
+                <table className="table table-spriped">
+                    <tr><th>ID</th><th>Color</th><th>Make</th><th>Model</th><th>Owner</th></tr>
+                    {this.state.car}
+                </table>
+            </div>
+        );
+
+    }
+}
+
  
 class Home extends Component{
     render(){
@@ -33,8 +84,7 @@ class Home extends Component{
 class BasicNetwork extends Component{
     state={
         a_amount:0,
-        b_amount:0,
-        result:""
+        b_amount:0
     }
  
     basic_network_connect=()=>{
@@ -61,10 +111,8 @@ class BasicNetwork extends Component{
         alert(this.amount.value);
         axios.post('/basic_network/send',{"amount":this.amount.value})
         .then((response)=>{
-            console.log(response.data);
-            const returnData = JSON.parse(response.data.result);
-            console.log(returnData);
-            this.setState({result:response.data.result});
+            console.log(response);
+            
         })
         .catch((error)=>{
             console.log(error);
@@ -87,12 +135,11 @@ class BasicNetwork extends Component{
                 <input placeholder='송금량' ref={ref=>this.amount=ref} />원을 {' '} 
                 <button onClick={this.send}  > 보내기</button><br/>               
                 </div>
-                <div>{this.state.result}</div>
+ 
             </div>
         );
     }
 }
-
 class Amount extends Component{
     render(){
         var amountStyle={
@@ -112,10 +159,60 @@ class Amount extends Component{
 }
  
 class FirstNetwork extends Component{
+    state={
+        a_amount:0,
+        b_amount:0
+    }
+ 
+    first_network_connect=()=>{
+        axios.get('first_network/connect')
+        .then((res)=>{
+            console.log(res);
+        })
+        .catch((error)=>{
+            console.log(error);
+        });
+    }
+ 
+    query=()=>{        
+        axios.get('/first_network/query')
+        .then((response)=>{            
+            this.setState({a_amount:response.data.a_amount, b_amount:response.data.b_amount});
+        })
+        .catch((error)=>{
+            console.log(error);
+        });
+    }
+ 
+    send=()=>{
+        alert(this.amount.value);
+        axios.post('/first_network/send',{"amount":this.amount.value})
+        .then((response)=>{
+            console.log(response);
+            
+        })
+        .catch((error)=>{
+            console.log(error);
+        });
+    }
+ 
     render(){
+       
         return(
             <div>
-                <h2>FirstNetwork</h2>
+                <h2>FirstNetwork
+                에 <button onClick={this.first_network_connect}>연결</button></h2>
+                <br/>
+                <button onClick={this.query}  > 잔액 확인</button> {' '} 
+                a : <Amount bgColor='magenta' amount={this.state.a_amount}></Amount>
+                b : <Amount bgColor='cyan' amount={this.state.b_amount}></Amount>
+                <br/>               
+                <br/> 
+                <div>a가 b에게 {' '}
+                <input placeholder='송금량' ref={ref=>this.amount=ref} />원을 {' '} 
+                <button onClick={this.send}  > 보내기</button><br/>               
+                </div>
+ 
             </div>
         );
     }
@@ -127,6 +224,7 @@ ReactDOM.render(
             <IndexRoute component={Home} />
             <Route path="basic" component={BasicNetwork} />
             <Route path="first" component={FirstNetwork} />
+       <Route path="fabcar" component={Fabcar} />
         </Route>
     </Router>)
      , document.getElementById("root")

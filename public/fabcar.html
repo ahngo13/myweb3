@@ -1,0 +1,132 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hyperledger Fabric Tuna Application</title>
+    <link rel="icon" href="favicon.png" type="image/gif">
+
+    <!-- require jquery and bootstrap scripts -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    
+    <!-- adding style here -->
+    <style type="text/css">
+      header{
+        background-color: lightgray;
+        font-size:20px;
+        padding:15px;
+      }
+      header, .form-group{
+        margin-bottom: 3%;
+      }
+      .form-group{
+        width:50%;
+      }
+      #body{
+        margin-left:3%;
+        margin-right:3%;
+      }
+      .form-control{
+        margin: 8px;
+      }
+      #right_header{
+        width:20%;
+        font-size:15px;
+        margin-right:0px;
+      }
+      #left_header{
+        margin-left:0;
+        width:40%;
+        display:inline-block;
+      } 
+      #id {
+        width:49%;
+        display: inline-block;
+      }
+      table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+      }
+      td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+      }
+      tr:nth-child(even) {
+          background-color: #dddddd;
+      }
+    </style>
+  </head>
+  <body ng-app="application" ng-controller="appController">
+    <header>
+      <div id="left_header">Hyperledger Fabric FabCar Application</div>
+      <i id="right_header">Example Blockchain Application for Introduction to Hyperledger Fabric</i>
+    </header>
+
+    <div id="body">
+      <div class="form-group">
+        <label>Query All Cars</label>
+        <p><input id="queryAllCar" type="submit" value="QueryAllCars" class="btn btn-primary" ng-click="queryAllCar()"></p>
+      </div>
+      
+      <div id="all_car"></div>
+
+      <div class="form-group">
+        <label>Query a Specific Car</label><br>
+        <h5 style="color:red;margin-bottom:2%" id="error_query">Error: Please enter a valid Car Id</h5>
+        
+        Enter a Car number: 
+
+        <input id="queryName" class="form-control" type="text" value="CAR0" ng-model="car_id">
+        <input id="querySubmit" type="submit" value="Query" class="btn btn-primary" >
+      </div>
+
+      <div id="query_car_content">
+        <table  class="table" align="center">
+
+          <tr>
+            <th>Color</th>
+            <th>Make</th>
+            <th>Model</th>
+            <th>Owner</th>
+          </tr>
+  
+          <tr id="query_car">           
+            <td>{{car.color}}</td>
+            <td>{{car.make}}</td>
+            <td>{{car.model}}</td>
+            <td>{{car.owner}}</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="form-group">
+        <label>Create New Car</label>
+        <h5 style="color:green;margin-bottom:2%" id="success_create">
+          </h5>
+        <br>
+        Enter Car Number: <input class="form-control" type="text" value="CAR10" id="car_id">
+        Enter name of Owner: <input class="form-control" type="text" value="EunSuJEON" id="car_owner">
+        Enter Make: <input class="form-control" type="text" value="KIA" id="car_make"> 
+        Enter Model: <input class="form-control" type="text" value="Sorrento" id="car_model">
+        Enter Color: <input class="form-control" type="text" value="red" id="car_color">
+        <input id="createSubmit" type="submit" value="Create" class="btn btn-primary" > 
+      </div>
+
+      <div class="form-group">
+        <label>Change Car Owner</label><br>
+        <h5 style="color:green;margin-bottom:2%" id="success_holder"></h5>
+        Enter a Car Number : <input class="form-control" id="car_id2" value="CAR10" >
+        Enter name of new Owner: <input class="form-control" id="car_owner2" value="EunSu JEON" >
+        <input id="transferSubmit" type="submit" value="Change" class="btn btn-primary" >
+      </div>
+    </div>
+  </body>
+    <!-- requiring the angular page 
+    <script type="text/javascript" src="app.js"> </script>-->
+    <script type="text/javascript" src="my.js"> </script>
+</html>
